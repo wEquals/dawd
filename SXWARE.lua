@@ -1,6 +1,89 @@
 -- New example script written by wally
 -- You can suggest changes with a pull request or something
 
+local License = "KEYAUTH-ljZmqX-gYQzab-di5eZm-FsMpKk-eT7xuA-eId36O" --* Your License to use this script.
+
+local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/ui-libraries/main/xaxas-notification/src.lua"))();
+local notifications = notificationLibrary.new({            
+    NotificationLifetime = 3, 
+    NotificationPosition = "Middle",
+    
+    TextFont = Enum.Font.Code,
+    TextColor = Color3.fromRGB(255, 255, 255),
+    TextSize = 15,
+    
+    TextStrokeTransparency = 0, 
+    TextStrokeColor = Color3.fromRGB(0, 0, 0)
+});
+
+
+print(' KeyAuth Lua Example - https://github.com/mazk5145/')
+local HttpService = game:GetService("HttpService")
+local StarterGui = game:GetService("StarterGui")
+local LuaName = "KeyAuth Lua Example"
+
+notifications:BuildNotificationUI();
+notifications:Notify("...");
+
+--* Configuration *--
+local initialized = false
+local sessionid = ""
+
+
+--* Application Details *--
+Name = "w" --* Application Name
+Ownerid = "UC4C1Z5vNm" --* OwnerID
+APPVersion = "1.0" --* Application Version
+
+local req = game:HttpGet('https://keyauth.win/api/1.1/?name=' .. Name .. '&ownerid=' .. Ownerid .. '&type=init&ver=' .. APPVersion)
+
+if req == "KeyAuth_Invalid" then 
+   print(" Error: Application not found.")
+
+   notifications:BuildNotificationUI();
+notifications:Notify(" Error: Application not found.");
+
+   return false
+end
+
+local data = HttpService:JSONDecode(req)
+
+if data.success == true then
+   initialized = true
+   sessionid = data.sessionid
+   --print(req)
+elseif (data.message == "invalidver") then
+   print(" Error: Wrong application version..")
+
+   notifications:BuildNotificationUI();
+   notifications:Notify(" Error: Wrong Application Version..");
+
+   return false
+else
+   print(" Error: " .. data.message)
+   return false
+end
+
+print("\n\n Licensing... \n")
+local req = game:HttpGet('https://keyauth.win/api/1.1/?name=' .. Name .. '&ownerid=' .. Ownerid .. '&type=license&key=' .. License ..'&ver=' .. APPVersion .. '&sessionid=' .. sessionid)
+local data = HttpService:JSONDecode(req)
+
+
+if data.success == false then 
+
+    notifications:BuildNotificationUI();
+    notifications:Notify(" Error: " .. data.message);
+
+    return false
+end
+
+   notifications:BuildNotificationUI();
+notifications:Notify("Loading...");
+
+
+--* Your code here *--
+
+--* Example Code to show user data *-- 
 local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
