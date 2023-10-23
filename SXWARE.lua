@@ -17,7 +17,6 @@ local notifications = notificationLibrary.new({
 });
 
 
-print(' KeyAuth Lua Example - https://github.com/mazk5145/')
 local HttpService = game:GetService("HttpService")
 local StarterGui = game:GetService("StarterGui")
 local LuaName = "KeyAuth Lua Example"
